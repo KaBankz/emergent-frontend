@@ -66,10 +66,47 @@ export default function Page() {
           agentState={agentState}
         />
         <RoomAudioRenderer />
+
+        <div className='flex flex-col gap-2 items-center'>
+          <span className='text-white text-2xl font-bold'>
+            Medical Emergencies Simulations
+          </span>
+          <div className='flex flex-row gap-2 justify-center'>
+            <Button
+              onClick={() => {
+                fetch('/api/simulate', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    simulation: 'heart-attack',
+                  }),
+                });
+              }}
+            >
+              Heart Attack
+            </Button>
+            <Button
+              onClick={() => {
+                fetch('/api/simulate', {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    simulation: 'stroke',
+                  }),
+                });
+              }}
+            >
+              Stroke
+            </Button>
+          </div>
+        </div>
+
         <NoAgentNotification state={agentState} />
       </LiveKitRoom>
     </main>
   );
+}
+
+function Button({ ...props }) {
+  return <button {...props} className='bg-white text-black p-2 rounded-md' />;
 }
 
 function SimpleVoiceAssistant(props: {
