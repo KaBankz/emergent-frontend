@@ -23,6 +23,7 @@ export default function Page() {
     ConnectionDetails | undefined
   >(undefined);
   const [agentState, setAgentState] = useState<AgentState>('disconnected');
+  const [currentSimulation, setCurrentSimulation] = useState('Heart Attack');
 
   const onConnectButtonClicked = useCallback(async () => {
     // Generate room connection details, including:
@@ -49,6 +50,11 @@ export default function Page() {
       data-lk-theme='default'
       className='h-full grid content-center bg-[var(--lk-bg)]'
     >
+      <div className='flex flex-col gap-2 items-center'>
+        <span className='text-white text-6xl font-bold leading-tight'>
+          Emergent
+        </span>
+      </div>
       <LiveKitRoom
         token={connectionDetails?.participantToken}
         serverUrl={connectionDetails?.serverUrl}
@@ -69,11 +75,16 @@ export default function Page() {
         <RoomAudioRenderer />
 
         <div className='flex flex-col gap-2 items-center'>
-          <span className='text-white text-2xl font-bold'>
+          <span className='text-white text-2xl font-bold flex flex-col gap-2'>
             Medical Emergencies Simulations
           </span>
           <div className='flex flex-row gap-2 justify-center'>
             <Button
+              className={
+                currentSimulation === 'Heart Attack'
+                  ? 'bg-red-500 text-white hover:bg-red-600'
+                  : ''
+              }
               onClick={() => {
                 fetch('/api/simulate', {
                   method: 'POST',
@@ -81,11 +92,17 @@ export default function Page() {
                     simulation: 'heart-attack',
                   }),
                 });
+                setCurrentSimulation('Heart Attack');
               }}
             >
               Heart Attack
             </Button>
             <Button
+              className={
+                currentSimulation === 'Stroke'
+                  ? 'bg-red-500 text-white hover:bg-red-600'
+                  : ''
+              }
               onClick={() => {
                 fetch('/api/simulate', {
                   method: 'POST',
@@ -93,6 +110,7 @@ export default function Page() {
                     simulation: 'stroke',
                   }),
                 });
+                setCurrentSimulation('Stroke');
               }}
             >
               Stroke
