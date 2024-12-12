@@ -25,16 +25,16 @@ export default function Home() {
             <span className='font-semibold text-xl'>Heart Attack</span>
           </div>
         </Link>
-        <Link href='/agent?simulation=low-blood-pressure'>
+        <Link href='/agent?simulation=low-blood-sugar'>
           <div className='flex flex-col gap-2 items-center rounded-md p-4 hover:scale-110 transition-all duration-300 bg-neutral-900 cursor-pointer'>
             <Image
               className='rounded-md object-cover w-[300px] h-[300px]'
               src='/dizzy.png'
-              alt='Low Blood Pressure'
+              alt='Low Blood Sugar'
               width={300}
               height={300}
             />
-            <span className='font-semibold text-xl'>Low Blood Pressure</span>
+            <span className='font-semibold text-xl'>Low Blood Sugar</span>
           </div>
         </Link>
         <Link href='/agent?simulation=low-blood-oxygen'>
