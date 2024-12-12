@@ -16,14 +16,23 @@ import type { ConnectionDetails } from '@/app/api/connection-details/route';
 import { NoAgentNotification } from '@/components/NoAgentNotification';
 import { CloseIcon } from '@/components/CloseIcon';
 import { useKrispNoiseFilter } from '@livekit/components-react/krisp';
-import { Button } from '@/components/Button';
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const simulation = searchParams.get('simulation');
+
+  useEffect(() => {
+    fetch('/api/simulate', {
+      method: 'POST',
+      body: JSON.stringify({ scenario: simulation }),
+    });
+  }, [simulation]);
+
   const [connectionDetails, updateConnectionDetails] = useState<
     ConnectionDetails | undefined
   >(undefined);
   const [agentState, setAgentState] = useState<AgentState>('disconnected');
-  const [currentSimulation, setCurrentSimulation] = useState('Heart Attack');
 
   const onConnectButtonClicked = useCallback(async () => {
     // Generate room connection details, including:
@@ -52,7 +61,7 @@ export default function Page() {
     >
       <div className='flex flex-col gap-2 items-center'>
         <span className='text-white text-6xl font-bold leading-tight'>
-          Emergent
+          Dr. Emergent
         </span>
       </div>
       <LiveKitRoom
@@ -76,46 +85,8 @@ export default function Page() {
 
         <div className='flex flex-col gap-2 items-center'>
           <span className='text-white text-2xl font-bold flex flex-col gap-2'>
-            Medical Emergencies Simulations
+            Current Simulating: {simulation}
           </span>
-          <div className='flex flex-row gap-2 justify-center'>
-            <Button
-              className={
-                currentSimulation === 'Heart Attack'
-                  ? 'bg-red-500 text-white hover:bg-red-600'
-                  : ''
-              }
-              onClick={() => {
-                fetch('/api/simulate', {
-                  method: 'POST',
-                  body: JSON.stringify({
-                    simulation: 'heart-attack',
-                  }),
-                });
-                setCurrentSimulation('Heart Attack');
-              }}
-            >
-              Heart Attack
-            </Button>
-            <Button
-              className={
-                currentSimulation === 'Stroke'
-                  ? 'bg-red-500 text-white hover:bg-red-600'
-                  : ''
-              }
-              onClick={() => {
-                fetch('/api/simulate', {
-                  method: 'POST',
-                  body: JSON.stringify({
-                    simulation: 'stroke',
-                  }),
-                });
-                setCurrentSimulation('Stroke');
-              }}
-            >
-              Stroke
-            </Button>
-          </div>
         </div>
 
         <NoAgentNotification state={agentState} />
