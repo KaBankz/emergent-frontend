@@ -54,6 +54,10 @@ export default function Page() {
     updateConnectionDetails(connectionDetailsData);
   }, []);
 
+  useEffect(() => {
+    onConnectButtonClicked();
+  }, [onConnectButtonClicked]);
+
   return (
     <main
       data-lk-theme='default'
@@ -63,6 +67,11 @@ export default function Page() {
         <span className='text-white text-6xl font-bold leading-tight'>
           Dr. Emergent
         </span>
+        <div className='flex flex-col gap-2 items-center'>
+          <span className='text-white text-2xl font-bold flex flex-col gap-2'>
+            Currently Simulating: {simulation}
+          </span>
+        </div>
       </div>
       <LiveKitRoom
         token={connectionDetails?.participantToken}
@@ -82,13 +91,6 @@ export default function Page() {
           agentState={agentState}
         />
         <RoomAudioRenderer />
-
-        <div className='flex flex-col gap-2 items-center'>
-          <span className='text-white text-2xl font-bold flex flex-col gap-2'>
-            Current Simulating: {simulation}
-          </span>
-        </div>
-
         <NoAgentNotification state={agentState} />
       </LiveKitRoom>
     </main>
@@ -98,7 +100,7 @@ export default function Page() {
 function SimpleVoiceAssistant(props: {
   onStateChange: (state: AgentState) => void;
 }) {
-  const { state, audioTrack, agentTranscriptions } = useVoiceAssistant();
+  const { state, audioTrack } = useVoiceAssistant();
 
   useEffect(() => {
     props.onStateChange(state);
@@ -106,9 +108,6 @@ function SimpleVoiceAssistant(props: {
 
   return (
     <div className='h-[300px] max-w-[90vw] mx-auto'>
-      {agentTranscriptions.map((transcription) => (
-        <div key={transcription.id}>{transcription.text}</div>
-      ))}
       <BarVisualizer
         state={state}
         barCount={5}
