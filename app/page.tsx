@@ -16,6 +16,7 @@ import type { ConnectionDetails } from './api/connection-details/route';
 import { NoAgentNotification } from '@/components/NoAgentNotification';
 import { CloseIcon } from '@/components/CloseIcon';
 import { useKrispNoiseFilter } from '@livekit/components-react/krisp';
+import { Button } from '@/components/Button';
 
 export default function Page() {
   const [connectionDetails, updateConnectionDetails] = useState<
@@ -103,10 +104,6 @@ export default function Page() {
       </LiveKitRoom>
     </main>
   );
-}
-
-function Button({ ...props }) {
-  return <button {...props} className='bg-white text-black p-2 rounded-md' />;
 }
 
 function SimpleVoiceAssistant(props: {
